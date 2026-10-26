@@ -71,6 +71,17 @@ txt_username.setText(model.getValueAt(i, 1).toString());
 txt_nama.setText(model.getValueAt(1, 2).toString());
 txt_telp.setText(model.getValueAt(i, 3).toString());
 cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
+    
+    void bersih() {
+        txt_idpetugas.setText("");
+        txt_username.setText("");
+        txt_password.setText("");
+        txt_nama.setText("");
+        txt_telp.setText("");
+        cmb_level.setSelectedItem("");
+        cmb_cari.setSelectedItem("");
+    }
+
 
     private void setupPlaceholder(JTextField field, String teksPlaceholder) {
         field.setText(teksPlaceholder);
@@ -156,7 +167,8 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Registrasi Admin");
         setForeground(java.awt.Color.white);
 
         jPanel5.setBackground(new java.awt.Color(232, 236, 243));
@@ -439,6 +451,11 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
 
         jButton2.setBackground(new java.awt.Color(51, 255, 51));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/layanan/image/recycling-symbol (1).png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(java.awt.Color.white);
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/layanan/image/delete (1).png"))); // NOI18N
@@ -478,6 +495,11 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
         jButton5.setMaximumSize(new java.awt.Dimension(83, 59));
         jButton5.setMinimumSize(new java.awt.Dimension(83, 59));
         jButton5.setPreferredSize(new java.awt.Dimension(83, 59));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -648,23 +670,85 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
     }// </editor-fold>//GEN-END:initComponents
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
-        // TODO add your handling code here:
+       bersih();
+        getData();
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
-        // TODO add your handling code here:
+        int p = JOptionPane.showConfirmDialog(null,
+                "Apakah benar-benar akan dihapus permanen ? ",
+                "Delete",
+                JOptionPane.YES_NO_OPTION);
+        if (p == 0) {
+            String sql = "delete from petugas where id_petugas=?";
+            try {
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txt_idpetugas.getText());
+                
+                pst.execute();
+                JOptionPane.showMessageDialog(null, "deleted");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+            getData();
+            bersih();
+        }
     }//GEN-LAST:event_jToggleButton3ActionPerformed
 
     private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
-        // TODO add your handling code here:
+        try {
+            String sql = "insert into petugas (id_petugas,nama_petugas,username,password,telp,level)values(?,?,?,?,?,?)";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txt_idpetugas.getText());
+            pst.setString(2, txt_nama.getText());
+            pst.setString(3, txt_username.getText());
+            pst.setString(4, txt_password.getText());
+            pst.setString(5, txt_telp.getText());
+            pst.setString(6, (String) cmb_level.getItemAt(cmb_level.getSelectedIndex()));
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "saved");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        getData();
+        bersih();
     }//GEN-LAST:event_jToggleButton4ActionPerformed
 
     private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jToggleButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        String sql = "";
+        
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+        try {
+            if (cmb_cari.getSelectedIndex() == 0) {
+                sql = "SELECT * FROM petugas where id_petugas like '%" + txt_cari.getText() + "%' ";
+                
+            }
+            if (cmb_cari.getSelectedIndex() == 1) {
+                sql = "SELECT * FROM petugas where nama_petugas like '%" + txt_cari.getText() + "%' ";
+            }
+            
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                Object[] obj = new Object[5];
+                obj[0] = rs.getString("id_petugas");
+                obj[1] = rs.getString("username");
+                obj[2] = rs.getString("nama_petugas");
+                obj[3] = rs.getString("telp");
+                obj[4] = rs.getString("level");
+                
+                model.addRow(obj);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txt_idpetugasFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_idpetugasFocusGained
@@ -686,19 +770,80 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
     }//GEN-LAST:event_txt_telpActionPerformed
 
     private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
-        // TODO add your handling code here:
+        try {
+            String idpetugas = txt_idpetugas.getText();
+            String nama = txt_nama.getText();
+            String username = txt_username.getText();
+            String password = txt_password.getText();
+            String telp = txt_telp.getText();
+            Object level = cmb_level.getSelectedItem();
+            
+            String sql = "UPDATE petugas set id_petugas='" + idpetugas + "', nama_petugas='" + nama + "', username='" + username + "',password='" + password + "' , telp='" + telp + "', level='" + level + "' where id_petugas='" + idpetugas + "'";
+            pst = conn.prepareStatement(sql);
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "UPDATE SUKSES");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_jToggleButton6ActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            String idpetugas = txt_idpetugas.getText();
+            String nama = txt_nama.getText();
+            String username = txt_username.getText();
+            String password = txt_password.getText();
+            String telp = txt_telp.getText();
+            Object level = cmb_level.getSelectedItem();
+            
+            
+            String sql = "UPDATE petugas set id_petugas='" + idpetugas + "', nama_petugas='" + nama + "', username='" + username + "',password='" + password + "' , telp='" + telp + "', level='" + level + "' where id_petugas='" + idpetugas + "'";
+            pst = conn.prepareStatement(sql);
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "UPDATE SUKSES");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        int p = JOptionPane.showConfirmDialog(null,
+                "Apakah benar-benar akan dihapus permanen ? ",
+                "Delete",
+                JOptionPane.YES_NO_OPTION);
+        if (p == 0) {
+            String sql = "delete from petugas where id_petugas=?";
+            try {
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txt_idpetugas.getText());
+                
+                pst.execute();
+                JOptionPane.showMessageDialog(null, "deleted");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+            getData();
+            bersih();
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+       try {
+            String sql = "insert into petugas (id_petugas,nama_petugas,username,password,telp,level)values(?,?,?,?,?,?)";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txt_idpetugas.getText());
+            pst.setString(2, txt_nama.getText());
+            pst.setString(3, txt_username.getText());
+            pst.setString(4, txt_password.getText());
+            pst.setString(5, txt_telp.getText());
+            pst.setString(6, (String) cmb_level.getItemAt(cmb_level.getSelectedIndex()));
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "saved");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        getData();
+        bersih();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void cmb_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_cariActionPerformed
@@ -708,6 +853,15 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
     private void cmb_levelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_levelActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmb_levelActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        bersih();
+        getData();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+       this.dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
