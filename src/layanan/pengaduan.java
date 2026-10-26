@@ -16,6 +16,12 @@ public class pengaduan extends javax.swing.JFrame {
      */
     public pengaduan() {
         initComponents();
+        
+        setIconImage(
+        new javax.swing.ImageIcon(
+            getClass().getResource("/layanan/image/logo satlantas.png")
+        ).getImage()
+    );
     }
 
     /**

@@ -23,6 +23,12 @@ public class petugas extends javax.swing.JFrame {
 
     public petugas() {
         initComponents();
+        
+        setIconImage(
+        new javax.swing.ImageIcon(
+            getClass().getResource("/layanan/image/logo satlantas.png")
+        ).getImage()
+    );
         setupPlaceholder(txt_idpetugas, "ID PETUGAS");
         setupPlaceholder(txt_username, "Username");
         setupPlaceholder(txt_password, "Password");

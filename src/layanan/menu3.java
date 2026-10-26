@@ -21,6 +21,12 @@ public class menu3 extends javax.swing.JFrame {
     String username = session.getU_username();
     public menu3() {
         initComponents();
+        
+        setIconImage(
+        new javax.swing.ImageIcon(
+            getClass().getResource("/layanan/image/logo satlantas.png")
+        ).getImage()
+    );
         this.setLocationRelativeTo(null);
         jLabel1.setText("SELAMAT DATANG:"+nama );
         jLabel2.setText("ANDA LOGIN SEBAGAI:"+username );

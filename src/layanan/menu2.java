@@ -19,6 +19,11 @@ public class menu2 extends javax.swing.JFrame {
      */
     public menu2() {
         initComponents();
+        setIconImage(
+        new javax.swing.ImageIcon(
+            getClass().getResource("/layanan/image/logo satlantas.png")
+        ).getImage()
+    );
     }
 
     /**

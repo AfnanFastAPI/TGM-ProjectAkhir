@@ -23,6 +23,11 @@ public class Register extends javax.swing.JFrame {
 
     public Register() {
         initComponents();
+        setIconImage(
+        new javax.swing.ImageIcon(
+            getClass().getResource("/layanan/image/logo satlantas.png")
+        ).getImage()
+    );
         setupPlaceholder(txt_idpetugas, "NIK / ID PETUGAS");
         setupPlaceholder(txt_username, "Username");
         setupPlaceholder(txt_password, "Password");

@@ -16,6 +16,11 @@ public class Tanggapan extends javax.swing.JFrame {
      */
     public Tanggapan() {
         initComponents();
+        setIconImage(
+        new javax.swing.ImageIcon(
+            getClass().getResource("/layanan/image/logo satlantas.png")
+        ).getImage()
+    );
     }
 
     /**

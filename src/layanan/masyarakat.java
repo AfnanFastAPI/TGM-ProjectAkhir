@@ -23,6 +23,12 @@ public class masyarakat extends javax.swing.JFrame {
 
     public masyarakat() {
         initComponents();
+        
+        setIconImage(
+        new javax.swing.ImageIcon(
+            getClass().getResource("/layanan/image/logo satlantas.png")
+        ).getImage()
+    );
         setupPlaceholder(txt_nik, "ID PETUGAS");
         setupPlaceholder(txt_username, "Username");
         setupPlaceholder(txt_password, "Password");
