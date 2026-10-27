@@ -174,11 +174,12 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrasi Admin");
         setForeground(java.awt.Color.white);
+        setMinimumSize(new java.awt.Dimension(1366, 768));
 
         jPanel5.setBackground(new java.awt.Color(232, 236, 243));
         jPanel5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.black, null, null));
         jPanel5.setForeground(new java.awt.Color(232, 236, 243));
-        jPanel5.setPreferredSize(new java.awt.Dimension(1920, 1080));
+        jPanel5.setPreferredSize(new java.awt.Dimension(1366, 768));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -637,14 +638,14 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 1862, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 965, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();

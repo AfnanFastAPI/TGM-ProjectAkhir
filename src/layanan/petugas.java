@@ -316,7 +316,7 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
         });
 
         cmb_level.setFont(new java.awt.Font("Inter 18pt", 0, 18)); // NOI18N
-        cmb_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin" }));
+        cmb_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masyarakat" }));
         cmb_level.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmb_levelActionPerformed(evt);
@@ -615,7 +615,7 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 1856, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(

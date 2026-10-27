@@ -1,4 +1,4 @@
-/*
+SN/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -158,12 +158,12 @@ public class RoundedButton extends JButton {
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("CETAK TANGGAPAN");
+        setTitle("CETAK PENGADUAN");
 
         jPanel1.setBackground(new java.awt.Color(245, 247, 250));
 
         jLabel3.setFont(new java.awt.Font("Inter 18pt Black", 0, 30)); // NOI18N
-        jLabel3.setText("REPORT TANGGAPAN");
+        jLabel3.setText("REPORT PENGADUAN");
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(203, 213, 225)));
