@@ -543,8 +543,8 @@
                                       <Component id="jToggleButton1" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jToggleButton6" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jToggleButton7" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jToggleButton8" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jToggleButton9" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jToggleButton8" alignment="1" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jToggleButton2" max="32767" attributes="0"/>

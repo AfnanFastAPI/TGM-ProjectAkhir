@@ -5,14 +5,29 @@
  */
 package layanan;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
+
 
 /**
  *
@@ -365,8 +380,8 @@ public class Tanggapan extends javax.swing.JFrame {
                             .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jToggleButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jToggleButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jToggleButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jToggleButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jToggleButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jToggleButton8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jToggleButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
@@ -644,9 +659,50 @@ int p = JOptionPane.showConfirmDialog(null,
     }//GEN-LAST:event_jToggleButton7ActionPerformed
 
     private void jToggleButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton8ActionPerformed
+    String sql = "SELECT\n" +
+"     tanggapan.`id_tanggapan` AS tanggapan_id_tanggapan,\n" +
+"     tanggapan.`id_pengaduan` AS tanggapan_id_pengaduan,\n" +
+"     tanggapan.`tgl_tanggapan` AS tanggapan_tgl_tanggapan,\n" +
+"     tanggapan.`tanggapan` AS tanggapan_tanggapan,\n" +
+"     tanggapan.`id_petugas` AS tanggapan_id_petugas,\n" +
+"     petugas.`id_petugas` AS petugas_id_petugas,\n" +
+"     petugas.`nama_petugas` AS petugas_nama_petugas,\n" +
+"     petugas.`username` AS petugas_username,\n" +
+"     petugas.`password` AS petugas_password,\n" +
+"     petugas.`telp` AS petugas_telp,\n" +
+"     petugas.`level` AS petugas_level,\n" +
+"     pengaduan.`id_pengaduan` AS pengaduan_id_pengaduan,\n" +
+"     pengaduan.`nik` AS pengaduan_nik,\n" +
+"     pengaduan.`tgl_pengaduan` AS pengaduan_tgl_pengaduan,\n" +
+"     pengaduan.`isi_laporan` AS pengaduan_isi_laporan,\n" +
+"     pengaduan.`status` AS pengaduan_status\n" +
+"FROM\n" +
+"     `petugas` petugas INNER JOIN `tanggapan` tanggapan ON petugas.`id_petugas` = tanggapan.`id_petugas`\n" +
+"     INNER JOIN `pengaduan` pengaduan ON tanggapan.`id_pengaduan` = pengaduan.`id_pengaduan`";
 
+    try {
+        pst = conn.prepareStatement(sql);
+        ResultSet rp = pst.executeQuery();
+        JasperPrint jasperPrint;
+        JRResultSetDataSource jrRS = new JRResultSetDataSource(rp);
+        JasperReport jasperReport = JasperCompileManager.compileReport("C:/Users/Afnan-FastAPI/Documents/NetBeansProjects/layanan/src/Report/tanggapan.jrxml");
+        jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrRS);
+        JRViewer aViewer = new JRViewer(jasperPrint);
+        JDialog viewer = new JDialog();
+        viewer.setTitle(". Pengaduan Report : .");
+        viewer.setAlwaysOnTop(true);
+        viewer.getContentPane().add(aViewer);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        viewer.setBounds(0, 0, screenSize.width, screenSize.height);
+        viewer.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/layanan/image/logo satlantas.png")));
+        viewer.setVisible(true);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Laporan kosong"+ e);
+}        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton8ActionPerformed
+private void seticon() {
+    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/layanan/image/logo satlantas.png")));
+}
     private void jToggleButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton9ActionPerformed
 this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton9ActionPerformed

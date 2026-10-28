@@ -5,14 +5,28 @@
  */
 package layanan;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -604,9 +618,43 @@ int p = JOptionPane.showConfirmDialog(null,
     }//GEN-LAST:event_jToggleButton7ActionPerformed
 
     private void jToggleButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton8ActionPerformed
 
+    String sql = "SELECT masyarakat.`nik` AS masyarakat_nik, "
+               + "masyarakat.`nama` AS masyarakat_nama, "
+               + "masyarakat.`username` AS masyarakat_username, "
+               + "masyarakat.`password` AS masyarakat_password, "
+               + "masyarakat.`telp` AS masyarakat_telp, "
+               + "pengaduan.`id_pengaduan` AS pengaduan_id_pengaduan, "
+               + "pengaduan.`nik` AS pengaduan_nik, "
+               + "pengaduan.`tgl_pengaduan` AS pengaduan_tgl_pengaduan, "
+               + "pengaduan.`isi_laporan` AS pengaduan_isi_laporan, "
+               + "pengaduan.`status` AS pengaduan_status "
+               + "FROM `masyarakat` masyarakat "
+               + "INNER JOIN `pengaduan` pengaduan ON masyarakat.`nik` = pengaduan.`nik`";
+
+    try {
+        pst = conn.prepareStatement(sql);
+        ResultSet rp = pst.executeQuery();
+        JasperPrint jasperPrint;
+        JRResultSetDataSource jrRS = new JRResultSetDataSource(rp);
+        JasperReport jasperReport = JasperCompileManager.compileReport("C:/Users/Afnan-FastAPI/Documents/NetBeansProjects/layanan/src/Report/pengaduan.jrxml");
+        jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrRS);
+        JRViewer aViewer = new JRViewer(jasperPrint);
+        JDialog viewer = new JDialog();
+        viewer.setTitle(". Pengaduan Report : .");
+        viewer.setAlwaysOnTop(true);
+        viewer.getContentPane().add(aViewer);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        viewer.setBounds(0, 0, screenSize.width, screenSize.height);
+        viewer.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/layanan/image/logo satlantas.png")));
+        viewer.setVisible(true);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Laporan kosong"+ e);
+}        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton8ActionPerformed
+private void seticon() {
+    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/layanan/image/logo satlantas.png")));
+}
     private void jToggleButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton9ActionPerformed
 this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton9ActionPerformed
