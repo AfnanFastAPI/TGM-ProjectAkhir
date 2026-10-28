@@ -58,7 +58,7 @@ public class login extends javax.swing.JFrame {
         CmbHak = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jButton6 = new javax.swing.JButton();
@@ -248,7 +248,7 @@ public class login extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(txtUsername)
                     .addComponent(jLabel5)
-                    .addComponent(jPasswordField1))
+                    .addComponent(txtPassword))
                 .addContainerGap(50, Short.MAX_VALUE))
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -262,7 +262,7 @@ public class login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
@@ -586,15 +586,57 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsernameActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+String id;
+         String nama;
+         String username;
+
+         String sql = "select * from petugas where username=? AND password=? AND level=?";
+
+            try {
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txtUsername.getText());
+                pst.setString(2, txtPassword.getText());
+                pst.setObject(3, CmbHak.getSelectedItem());
+
+                rs = pst.executeQuery();
+                if (rs.next()) {
+                    id = rs.getString("id_petugas");
+                    nama = rs.getString("nama_petugas");
+                    username=rs.getString("username");
+
+                    session.setU_id(id);
+                    session.setU_namaDepan(nama);
+                    session.setU_username(username);
+                    if (CmbHak.getSelectedItem() == "Admin") {
+                        menu1 adm = new menu1();
+                        adm.setVisible(true);
+                        adm.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        this.setVisible(false);
+                        this.dispose();
+                    }
+                    if (CmbHak.getSelectedItem() == "Petugas") {
+                        menu3 petgs = new menu3();
+                        petgs.setVisible(true);
+                        petgs.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setVisible(false);
+        this.dispose();
+        }
+
+    } else {
+        JOptionPane.showMessageDialog(null, "Username and Password is INCORRECT");
+
+    }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+    System.exit(0);      // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtUsername1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsername1ActionPerformed
@@ -621,36 +663,19 @@ public class login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new login().setVisible(true);
-            }
-        });
+    try {
+        javax.swing.UIManager.setLookAndFeel(
+            new com.formdev.flatlaf.FlatLightLaf()
+        );
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(login.class.getName())
+            .log(java.util.logging.Level.SEVERE, null, ex);
     }
+
+    java.awt.EventQueue.invokeLater(() -> {
+        new login().setVisible(true);
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CmbHak;
@@ -685,9 +710,9 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     private javax.swing.JTextField txtUsername1;
     // End of variables declaration//GEN-END:variables

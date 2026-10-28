@@ -73,9 +73,9 @@ public class Register extends javax.swing.JFrame {
 int i= jTable1.getSelectedRow();
 txt_idpetugas.setText(model.getValueAt(i, 0).toString());
 txt_username.setText(model.getValueAt(i, 1).toString());
-txt_nama.setText(model.getValueAt(1, 2).toString());
+txt_nama.setText(model.getValueAt(i, 2).toString());
 txt_telp.setText(model.getValueAt(i, 3).toString());
-cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
+cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
     
     void bersih() {
         txt_idpetugas.setText("");
@@ -786,6 +786,8 @@ cmb_level.setSelectedItem(model.getValueAt(1, 4).toString());}
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
+        getData();
+        bersih();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

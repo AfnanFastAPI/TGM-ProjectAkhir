@@ -11,7 +11,7 @@ import javax.swing.*;
 public class Koneksi {
     public static Connection KoneksiDB() {
         try {
-            Class.forName("com.mysql.jdbc.Driver"); // memanggil driver JDBC
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/layanan", "root", "");
             return conn;
         } catch (ClassNotFoundException | SQLException e) {

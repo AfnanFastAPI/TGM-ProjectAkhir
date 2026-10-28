@@ -49,9 +49,9 @@ public class menu1 extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("APLIKASI PENGADUAN LAYANAN MASYARAKAT");
 
-        jLabel1.setFont(new java.awt.Font("Inter 18pt", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Inter 18pt", 0, 12)); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Inter 18pt", 0, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Inter 18pt", 0, 12)); // NOI18N
 
         jMenuBar1.setBackground(java.awt.Color.white);
         jMenuBar1.setForeground(java.awt.Color.white);

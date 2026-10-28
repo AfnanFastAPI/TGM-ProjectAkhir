@@ -5,23 +5,89 @@
  */
 package layanan;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Afnan FastAPI
  */
 public class pengaduan extends javax.swing.JFrame {
+    
+    Connection conn = null;
+            ResultSet rs = null;
+            PreparedStatement pst = null;
+            private final DateFormat dfl = new SimpleDateFormat("dd/MM/yyyy");
+            Calendar hariini;
+            private DefaultTableModel model;
 
     /**
      * Creates new form registrasi
      */
     public pengaduan() {
         initComponents();
+        setLocationRelativeTo(this);
+        conn = Koneksi.Koneksi. KoneksiDB();
+        
+        model = new DefaultTableModel();
+        jTable1.setModel (model);
+        model.addColumn("NIK / ID Petugas");
+        model.addColumn("Username");
+        model.addColumn("Nama Lengkap");
+        model.addColumn ("Telpone");
+        model.addColumn("Hak Akses");
+        getData();
+        
         setIconImage(
         new javax.swing.ImageIcon(
             getClass().getResource("/layanan/image/logo satlantas.png")
         ).getImage()
     );
     }
+    
+    void getData() {
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+            try {
+//membuat statemen pemanggilan data pada table surat mas
+                    String sql = "select * from pengaduan";
+                    pst = conn.prepareStatement(sql);
+                    rs = pst.executeQuery();
+                    //penelusuran baris pada tabel surat_masuk dari database
+                        while (rs.next()) {
+                    Object[] obj = new Object [5];
+                    obj [0] = rs.getString("id_pengaduan");
+                    obj [1] = rs.getString("nik");
+                    obj [2] = rs.getString("tgl_pengaduan"); 
+                    obj [3] = rs.getString("isi_laporan"); 
+                    obj [4]=rs.getString("status");
+                    model.addRow (obj);
+                } 
+            } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);}
+    }
+    
+    void pilihData() {
+        int i= jTable1.getSelectedRow();
+        txt_pengaduan.setText(model.getValueAt(i, 0).toString());
+        txt_nik.setText(model.getValueAt(i, 1).toString());
+        txt_nama.setText(model.getValueAt(i, 2).toString());
+        txt_isi.setText(model.getValueAt(i, 3).toString());
+        txt_status.setText(model.getValueAt(i, 4).toString());}
+    
+    void bersih() {
+        txt_pengaduan.setText("");
+        txt_isi.setText("");
+        txt_nama.setText("");
+        txt_status.setText("");
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,22 +103,22 @@ public class pengaduan extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField3 = new javax.swing.JTextField();
+        cmb_cari = new javax.swing.JComboBox<>();
+        txt_cari = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txt_pengaduan = new javax.swing.JTextField();
+        txt_nik = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txt_nama = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jd_tglpengaduan = new com.toedter.calendar.JDateChooser();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jTextField5 = new javax.swing.JTextField();
+        txt_isi = new javax.swing.JTextArea();
+        txt_status = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jToggleButton1 = new javax.swing.JToggleButton();
@@ -60,12 +126,15 @@ public class pengaduan extends javax.swing.JFrame {
         jToggleButton7 = new javax.swing.JToggleButton();
         jToggleButton8 = new javax.swing.JToggleButton();
         jToggleButton9 = new javax.swing.JToggleButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
         jLabel11 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pengaduan Masyarakat");
         setBackground(new java.awt.Color(234, 242, 248));
         setMinimumSize(new java.awt.Dimension(1366, 768));
         setSize(new java.awt.Dimension(1366, 768));
@@ -123,7 +192,7 @@ public class pengaduan extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NAMA", " " }));
+        cmb_cari.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NAMA", " " }));
 
         jLabel4.setFont(new java.awt.Font("Inter 18pt", 1, 18)); // NOI18N
         jLabel4.setText("Daftar Pengaduan");
@@ -141,9 +210,9 @@ public class pengaduan extends javax.swing.JFrame {
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jButton1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_cari, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmb_cari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel4))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -156,8 +225,8 @@ public class pengaduan extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmb_cari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_cari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                 .addContainerGap())
@@ -171,29 +240,29 @@ public class pengaduan extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Inter 18pt", 0, 11)); // NOI18N
         jLabel2.setText("NIK");
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
+        txt_pengaduan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
 
-        jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
+        txt_nik.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
 
         jLabel9.setFont(new java.awt.Font("Inter 18pt", 0, 11)); // NOI18N
         jLabel9.setText("Isi Laporan Pengaduan");
 
         jLabel3.setFont(new java.awt.Font("Inter 18pt", 0, 11)); // NOI18N
-        jLabel3.setText("TANGGAL TANGGAPAN");
+        jLabel3.setText("TANGGAL PENGADUAN");
 
-        jTextField4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
+        txt_nama.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
 
         jLabel7.setFont(new java.awt.Font("Inter 18pt", 0, 11)); // NOI18N
         jLabel7.setText("NAMA");
 
-        jDateChooser1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
+        jd_tglpengaduan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jTextArea2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
-        jScrollPane3.setViewportView(jTextArea2);
+        txt_isi.setColumns(20);
+        txt_isi.setRows(5);
+        txt_isi.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
+        jScrollPane3.setViewportView(txt_isi);
 
-        jTextField5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
+        txt_status.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(233, 237, 246), 2));
 
         jLabel10.setFont(new java.awt.Font("Inter 18pt", 0, 11)); // NOI18N
         jLabel10.setText("STATUS");
@@ -245,12 +314,23 @@ public class pengaduan extends javax.swing.JFrame {
             }
         });
 
+        jToggleButton2.setBackground(new java.awt.Color(255, 255, 255));
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/layanan/image/save_2.PNG"))); // NOI18N
+        jToggleButton2.setBorder(null);
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jToggleButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton6)
@@ -260,22 +340,37 @@ public class pengaduan extends javax.swing.JFrame {
                 .addComponent(jToggleButton8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton9)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToggleButton1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jToggleButton6, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jToggleButton7, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jToggleButton8, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jToggleButton9, javax.swing.GroupLayout.Alignment.TRAILING)))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jToggleButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jToggleButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jToggleButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jToggleButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jToggleButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jLabel11.setFont(new java.awt.Font("Inter 18pt", 0, 18)); // NOI18N
         jLabel11.setText("FORM PENGADUAN");
+
+        jButton2.setBackground(new java.awt.Color(255, 255, 0));
+        jButton2.setText("CEK");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -297,16 +392,18 @@ public class pengaduan extends javax.swing.JFrame {
                             .addComponent(jLabel1))
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 223, Short.MAX_VALUE)
+                            .addComponent(txt_pengaduan, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_nik, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jd_tglpengaduan, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_nama, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_status, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -314,37 +411,36 @@ public class pengaduan extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel11)
-                .addGap(29, 29, 29)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(28, 28, 28)
+                            .addComponent(txt_pengaduan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
+                            .addComponent(txt_nik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2))
+                        .addGap(29, 29, 29)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jd_tglpengaduan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(33, 33, 33)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_nama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txt_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
         );
 
         jPanel6.setBackground(new java.awt.Color(30, 53, 98));
@@ -401,7 +497,7 @@ public class pengaduan extends javax.swing.JFrame {
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -427,19 +523,84 @@ public class pengaduan extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        // TODO add your handling code here:
+        String tampilan="yyyy-MM-dd";
+            SimpleDateFormat fm = new SimpleDateFormat(tampilan);
+            String tanggal=String.valueOf(fm.format(jd_tglpengaduan.getDate()));     
+            try {
+            String id_pengaduan = txt_pengaduan.getText();
+            Object nik = txt_nik.getText();
+            String tgl = tanggal;
+            String isi = txt_isi.getText();
+            String status = txt_status.getText();            
+            
+            String sql = "UPDATE pengaduan set id_pengaduan='" + id_pengaduan + "', nik='" + nik + "', tgl_pengaduan='" + tgl + "',isi_laporan='" + isi + "' , status='" + status + "' where id_pengaduan='" + id_pengaduan + "'";
+            pst = conn.prepareStatement(sql);
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "UPDATE SUKSES");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        getData();
+        bersih();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+String sql = "";
+        
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+        try {
+            if (cmb_cari.getSelectedIndex() == 0) {
+                sql = "SELECT * FROM pengaduan where id_pengaduan like '%" + txt_cari.getText() + "%' ";
+                
+            }
+            if (cmb_cari.getSelectedIndex() == 1) {
+                sql = "SELECT * FROM pengaduan where nama_pengaduan like '%" + txt_cari.getText() + "%' ";
+            }
+            
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                Object[] obj = new Object[5];
+                obj[0] = rs.getString("id_pengaduan");
+                obj[1] = rs.getString("nik");
+                obj[2] = rs.getString("tgl_pengaduan");
+                obj[3] = rs.getString("isi_laporan");
+                obj[4] = rs.getString("status");
+                
+                model.addRow(obj);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
-        // TODO add your handling code here:
+getData();
+        bersih();        // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton6ActionPerformed
 
     private void jToggleButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton7ActionPerformed
-        // TODO add your handling code here:
+int p = JOptionPane.showConfirmDialog(null,
+                "Apakah benar-benar akan dihapus permanen ? ",
+                "Delete",
+                JOptionPane.YES_NO_OPTION);
+        if (p == 0) {
+            String sql = "delete from pengaduan where id_pengaduan=?";
+            try {
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txt_pengaduan.getText());
+                
+                pst.execute();
+                JOptionPane.showMessageDialog(null, "deleted");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+            getData();
+            bersih();
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton7ActionPerformed
 
     private void jToggleButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton8ActionPerformed
@@ -447,8 +608,62 @@ public class pengaduan extends javax.swing.JFrame {
     }//GEN-LAST:event_jToggleButton8ActionPerformed
 
     private void jToggleButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton9ActionPerformed
-        // TODO add your handling code here:
+this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton9ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        String tampilan="yyyy-MM-dd";
+            SimpleDateFormat fm = new SimpleDateFormat(tampilan);
+            String tanggal=String.valueOf(fm.format(jd_tglpengaduan.getDate()));     
+        try {
+            String sql = "insert into pengaduan (nik,tgl_pengaduan,isi_laporan,status)values(?,?,?,?)";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txt_nik.getText());
+            pst.setString(2, tanggal);
+            pst.setString(3, txt_isi.getText());
+            pst.setString(4, txt_status.getText());
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "saved");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        getData();
+        bersih();
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String sql = "select * from masyarakat where nik='" + txt_nik.getText() + "'";
+    try {
+        
+        pst = conn.prepareStatement(sql);
+        rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            String add1 = rs.getString("nama");
+            txt_nama.setText(add1);
+            
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        String sql = "select * from masyarakat where nik='" + txt_nik.getText() + "'";
+    try {
+        
+        pst = conn.prepareStatement(sql);
+        rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            String add1 = rs.getString("nama");
+            txt_nama.setText(add1);
+            
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -501,9 +716,9 @@ public class pengaduan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmb_cari;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -522,16 +737,18 @@ public class pengaduan extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JToggleButton jToggleButton6;
     private javax.swing.JToggleButton jToggleButton7;
     private javax.swing.JToggleButton jToggleButton8;
     private javax.swing.JToggleButton jToggleButton9;
+    private com.toedter.calendar.JDateChooser jd_tglpengaduan;
+    private javax.swing.JTextField txt_cari;
+    private javax.swing.JTextArea txt_isi;
+    private javax.swing.JTextField txt_nama;
+    private javax.swing.JTextField txt_nik;
+    private javax.swing.JTextField txt_pengaduan;
+    private javax.swing.JTextField txt_status;
     // End of variables declaration//GEN-END:variables
 }
