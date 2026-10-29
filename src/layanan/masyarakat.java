@@ -61,7 +61,7 @@ public class masyarakat extends javax.swing.JFrame {
                     Object[] obj = new Object [5];
                     obj [0] = rs.getString("nik");
                     obj [1] = rs.getString("username");
-                    obj [2] = rs.getString("nama_petugas"); 
+                    obj [2] = rs.getString("nama"); 
                     obj [3] = rs.getString("telp"); 
                     obj [4]=rs.getString("level");
                     model.addRow (obj);
@@ -265,6 +265,11 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
         ));
         jTable1.setToolTipText("");
         jTable1.setRowHeight(30);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel6.setBackground(new java.awt.Color(30, 53, 98));
@@ -316,7 +321,7 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
         });
 
         cmb_level.setFont(new java.awt.Font("Inter 18pt", 0, 18)); // NOI18N
-        cmb_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin" }));
+        cmb_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masyarakat" }));
         cmb_level.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmb_levelActionPerformed(evt);
@@ -615,7 +620,7 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 1856, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
@@ -686,7 +691,7 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
                 "Delete",
                 JOptionPane.YES_NO_OPTION);
         if (p == 0) {
-            String sql = "delete from petugas where id_petugas=?";
+            String sql = "delete from masyarakat where nik=?";
             try {
                 pst = conn.prepareStatement(sql);
                 pst.setString(1, txt_nik.getText());
@@ -702,20 +707,27 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
     }//GEN-LAST:event_jToggleButton3ActionPerformed
 
     private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
-        try {
-            String sql = "insert into petugas (id_petugas,nama_petugas,username,password,telp,level)values(?,?,?,?,?,?)";
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, txt_nik.getText());
-            pst.setString(2, txt_nama.getText());
-            pst.setString(3, txt_username.getText());
-            pst.setString(4, txt_password.getText());
-            pst.setString(5, txt_telp.getText());
-            pst.setString(6, (String) cmb_level.getItemAt(cmb_level.getSelectedIndex()));
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "saved");
+       try {
+    String sql = "INSERT INTO masyarakat "
+            + "(nik, nama, username, password, telp, level) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
+
+    pst = conn.prepareStatement(sql);
+    pst.setString(1, txt_nik.getText());
+    pst.setString(2, txt_nama.getText());
+    pst.setString(3, txt_username.getText());
+    pst.setString(4, txt_password.getText());
+    pst.setString(5, txt_telp.getText());
+    pst.setString(6, cmb_level.getSelectedItem().toString());
+
+    pst.executeUpdate();
+
+    JOptionPane.showMessageDialog(null, "Data berhasil disimpan!");
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
+
         getData();
         bersih();
     }//GEN-LAST:event_jToggleButton4ActionPerformed
@@ -731,11 +743,11 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
         model.fireTableDataChanged();
         try {
             if (cmb_cari.getSelectedIndex() == 0) {
-                sql = "SELECT * FROM petugas where id_petugas like '%" + txt_cari.getText() + "%' ";
+                sql = "SELECT * FROM masyarakat where nik like '%" + txt_cari.getText() + "%' ";
                 
             }
             if (cmb_cari.getSelectedIndex() == 1) {
-                sql = "SELECT * FROM petugas where nama_petugas like '%" + txt_cari.getText() + "%' ";
+                sql = "SELECT * FROM masyarakat where nama like '%" + txt_cari.getText() + "%' ";
             }
             
             pst = conn.prepareStatement(sql);
@@ -743,9 +755,9 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
             
             while (rs.next()) {
                 Object[] obj = new Object[5];
-                obj[0] = rs.getString("id_petugas");
+                obj[0] = rs.getString("nik");
                 obj[1] = rs.getString("username");
-                obj[2] = rs.getString("nama_petugas");
+                obj[2] = rs.getString("nama");
                 obj[3] = rs.getString("telp");
                 obj[4] = rs.getString("level");
                 
@@ -776,17 +788,30 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
     }//GEN-LAST:event_txt_telpActionPerformed
 
     private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
-        try {
-            String idpetugas = txt_nik.getText();
+         try {
+            String nik = txt_nik.getText();
             String nama = txt_nama.getText();
             String username = txt_username.getText();
             String password = txt_password.getText();
             String telp = txt_telp.getText();
             Object level = cmb_level.getSelectedItem();
             
-            String sql = "UPDATE petugas set id_petugas='" + idpetugas + "', nama_petugas='" + nama + "', username='" + username + "',password='" + password + "' , telp='" + telp + "', level='" + level + "' where id_petugas='" + idpetugas + "'";
+            
+            String sql = "UPDATE masyarakat SET "
+        + "nama=?, username=?, password=?, telp=?, level=? "
+        + "WHERE nik=?";
+
             pst = conn.prepareStatement(sql);
-            pst.execute();
+            pst.setString(1, txt_nama.getText());
+            pst.setString(2, txt_username.getText());
+            pst.setString(3, txt_password.getText());
+            pst.setString(4, txt_telp.getText());
+            pst.setString(5, cmb_level.getSelectedItem().toString());
+            pst.setString(6, txt_nik.getText());
+
+            pst.executeUpdate();
+
+            getData();
             JOptionPane.showMessageDialog(null, "UPDATE SUKSES");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -795,7 +820,7 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         try {
-            String idpetugas = txt_nik.getText();
+            String nik = txt_nik.getText();
             String nama = txt_nama.getText();
             String username = txt_username.getText();
             String password = txt_password.getText();
@@ -803,9 +828,21 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
             Object level = cmb_level.getSelectedItem();
             
             
-            String sql = "UPDATE petugas set id_petugas='" + idpetugas + "', nama_petugas='" + nama + "', username='" + username + "',password='" + password + "' , telp='" + telp + "', level='" + level + "' where id_petugas='" + idpetugas + "'";
+            String sql = "UPDATE masyarakat SET "
+        + "nama=?, username=?, password=?, telp=?, level=? "
+        + "WHERE nik=?";
+
             pst = conn.prepareStatement(sql);
-            pst.execute();
+            pst.setString(1, txt_nama.getText());
+            pst.setString(2, txt_username.getText());
+            pst.setString(3, txt_password.getText());
+            pst.setString(4, txt_telp.getText());
+            pst.setString(5, cmb_level.getSelectedItem().toString());
+            pst.setString(6, txt_nik.getText());
+
+            pst.executeUpdate();
+
+            getData();
             JOptionPane.showMessageDialog(null, "UPDATE SUKSES");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -818,7 +855,7 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
                 "Delete",
                 JOptionPane.YES_NO_OPTION);
         if (p == 0) {
-            String sql = "delete from petugas where id_petugas=?";
+            String sql = "delete from masyarakat where nik=?";
             try {
                 pst = conn.prepareStatement(sql);
                 pst.setString(1, txt_nik.getText());
@@ -835,19 +872,26 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
        try {
-            String sql = "insert into petugas (id_petugas,nama_petugas,username,password,telp,level)values(?,?,?,?,?,?)";
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, txt_nik.getText());
-            pst.setString(2, txt_nama.getText());
-            pst.setString(3, txt_username.getText());
-            pst.setString(4, txt_password.getText());
-            pst.setString(5, txt_telp.getText());
-            pst.setString(6, (String) cmb_level.getItemAt(cmb_level.getSelectedIndex()));
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "saved");
+    String sql = "INSERT INTO masyarakat "
+            + "(nik, nama, username, password, telp, level) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
+
+    pst = conn.prepareStatement(sql);
+    pst.setString(1, txt_nik.getText());
+    pst.setString(2, txt_nama.getText());
+    pst.setString(3, txt_username.getText());
+    pst.setString(4, txt_password.getText());
+    pst.setString(5, txt_telp.getText());
+    pst.setString(6, cmb_level.getSelectedItem().toString());
+
+    pst.executeUpdate();
+
+    JOptionPane.showMessageDialog(null, "Data berhasil disimpan!");
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
+
         getData();
         bersih();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -868,6 +912,16 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
        this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+int baris = jTable1.getSelectedRow();
+
+    if (baris != -1) {
+        txt_nik.setText(
+            jTable1.getValueAt(baris, 0).toString()
+        );
+    }       // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments

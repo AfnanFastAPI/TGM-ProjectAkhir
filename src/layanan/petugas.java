@@ -316,7 +316,7 @@ cmb_level.setSelectedItem(model.getValueAt(i, 4).toString());}
         });
 
         cmb_level.setFont(new java.awt.Font("Inter 18pt", 0, 18)); // NOI18N
-        cmb_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masyarakat" }));
+        cmb_level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Petugas" }));
         cmb_level.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmb_levelActionPerformed(evt);
