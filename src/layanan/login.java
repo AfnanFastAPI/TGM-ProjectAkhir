@@ -92,7 +92,6 @@ public class login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("LOGIN cPANEL");
-        setMaximumSize(new java.awt.Dimension(1366, 768));
         setMinimumSize(new java.awt.Dimension(1366, 768));
 
         jPanel3.setBackground(new java.awt.Color(232, 236, 243));
@@ -104,7 +103,7 @@ public class login extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Inter 24pt", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(254, 254, 254));
-        jLabel1.setText("LOGIN cPANEL");
+        jLabel1.setText("LOGIN SATLANTAS");
 
         jLabel2.setFont(new java.awt.Font("Inter 24pt", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(254, 254, 254));
@@ -132,9 +131,9 @@ public class login extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Inter 18pt", 0, 12)); // NOI18N
         jLabel10.setText("Password");
 
-        jPanel5.setBackground(new java.awt.Color(85, 98, 132));
+        jPanel5.setBackground(new java.awt.Color(68, 78, 105));
 
-        jPanel7.setBackground(new java.awt.Color(85, 98, 132));
+        jPanel7.setBackground(new java.awt.Color(68, 78, 105));
 
         jButton6.setBackground(new java.awt.Color(68, 78, 105));
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/layanan/image/icons8-login-50.png"))); // NOI18N
@@ -145,7 +144,7 @@ public class login extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(85, 98, 132));
+        jButton1.setBackground(new java.awt.Color(68, 78, 105));
         jButton1.setFont(new java.awt.Font("Inter 18pt", 0, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Login");
@@ -179,7 +178,7 @@ public class login extends javax.swing.JFrame {
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
-        jPanel8.setBackground(new java.awt.Color(85, 98, 132));
+        jPanel8.setBackground(new java.awt.Color(68, 78, 105));
 
         jButton7.setBackground(new java.awt.Color(68, 78, 105));
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/layanan/image/logout (1).png"))); // NOI18N
@@ -190,7 +189,7 @@ public class login extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(85, 98, 132));
+        jButton2.setBackground(new java.awt.Color(68, 78, 105));
         jButton2.setFont(new java.awt.Font("Inter 18pt", 0, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Keluar");
@@ -221,7 +220,7 @@ public class login extends javax.swing.JFrame {
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
-        jPanel12.setBackground(new java.awt.Color(85, 98, 132));
+        jPanel12.setBackground(new java.awt.Color(68, 78, 105));
 
         jButton10.setBackground(new java.awt.Color(68, 78, 105));
         jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/layanan/image/add (1).png"))); // NOI18N
@@ -232,7 +231,7 @@ public class login extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(85, 98, 132));
+        jButton5.setBackground(new java.awt.Color(68, 78, 105));
         jButton5.setFont(new java.awt.Font("Inter 18pt", 0, 14)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Daftar");
@@ -610,15 +609,19 @@ public class login extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 1366, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -675,7 +678,7 @@ public class login extends javax.swing.JFrame {
         }
 
     } else {
-        JOptionPane.showMessageDialog(null, "Username and Password is INCORRECT");
+        JOptionPane.showMessageDialog(null, "Username atau Password salah");
 
     }
     } catch (Exception e) {
@@ -725,7 +728,7 @@ String id;
         }
 
     } else {
-        JOptionPane.showMessageDialog(null, "Username and Password is INCORRECT");
+        JOptionPane.showMessageDialog(null, "Username atau Password salah");
 
     }
     } catch (Exception e) {
@@ -746,11 +749,81 @@ String id;
     }//GEN-LAST:event_txtUsername1ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+String sql = "SELECT nik, nama, username FROM masyarakat "
+           + "WHERE username = ? AND password = ? "
+           + "AND level = 'Masyarakat'";
+
+try {
+    pst = conn.prepareStatement(sql);
+    pst.setString(1, txtUsername1.getText().trim());
+    pst.setString(2, jPasswordField2.getText());
+
+    rs = pst.executeQuery();
+
+    if (rs.next()) {
+        String id = rs.getString("nik");
+        String nama = rs.getString("nama");
+        String username = rs.getString("username");
+
+        session.setU_id(id);
+        session.setU_namaDepan(nama);
+        session.setU_username(username);
+
+        menu2 m = new menu2();
+        m.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        m.setVisible(true);
+
+        this.dispose();
+
+    } else {
+        JOptionPane.showMessageDialog(
+            this,
+            "Username atau Password salah"
+        );
+    }
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, e.getMessage());
+}        // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+String sql = "SELECT nik, nama, username FROM masyarakat "
+           + "WHERE username = ? AND password = ? "
+           + "AND level = 'Masyarakat'";
+
+try {
+    pst = conn.prepareStatement(sql);
+    pst.setString(1, txtUsername1.getText().trim());
+    pst.setString(2, jPasswordField2.getText());
+
+    rs = pst.executeQuery();
+
+    if (rs.next()) {
+        String id = rs.getString("nik");
+        String nama = rs.getString("nama");
+        String username = rs.getString("username");
+
+        session.setU_id(id);
+        session.setU_namaDepan(nama);
+        session.setU_username(username);
+
+        menu2 m = new menu2();
+        m.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        m.setVisible(true);
+
+        this.dispose();
+
+    } else {
+        JOptionPane.showMessageDialog(
+            this,
+            "Username atau Password salah"
+        );
+    }
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, e.getMessage());
+}                // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed

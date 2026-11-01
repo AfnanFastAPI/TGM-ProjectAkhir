@@ -203,6 +203,11 @@ public class Tanggapan extends javax.swing.JFrame {
             }
         ));
         jTable1.setRowHeight(36);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("CARI");
@@ -769,6 +774,16 @@ String tampilan="yyyy-MM-dd";
         JOptionPane.showMessageDialog(null, e);
     }
     }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+int baris = jTable1.getSelectedRow();
+
+    if (baris != -1) {
+        txt_tanggapan.setText(
+            jTable1.getValueAt(baris, 0).toString()
+        );
+    }        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments

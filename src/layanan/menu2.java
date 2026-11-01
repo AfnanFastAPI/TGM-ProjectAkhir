@@ -13,18 +13,26 @@ import javax.swing.JOptionPane;
  * @author Afnan FastAPI
  */
 public class menu2 extends javax.swing.JFrame {
-
-    /**
-     * Creates new form menu2
-     */
+    
+    String nama = session.getU_namaDepan();
+    String username = session.getU_username();
     public menu2() {
         initComponents();
+        
         setIconImage(
         new javax.swing.ImageIcon(
             getClass().getResource("/layanan/image/logo satlantas.png")
         ).getImage()
     );
+        this.setLocationRelativeTo(null);
+        jLabel1.setText("SELAMAT DATANG:"+nama );
+        jLabel2.setText("ANDA LOGIN SEBAGAI:"+username );
     }
+
+
+    /**
+     * Creates new form menu2
+     */
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,14 +49,15 @@ public class menu2 extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("APLIKASI PENGADUAN LAYANAN MASYARAKAT");
 
-        jLabel1.setFont(new java.awt.Font("Inter 18pt", 0, 13)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Inter 18pt", 0, 36)); // NOI18N
+        jLabel1.setText("123");
 
-        jLabel2.setFont(new java.awt.Font("Inter 18pt", 0, 13)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Inter 18pt", 0, 36)); // NOI18N
 
         jMenuBar1.setBackground(java.awt.Color.white);
         jMenuBar1.setForeground(java.awt.Color.white);
@@ -67,13 +76,13 @@ public class menu2 extends javax.swing.JFrame {
 
         jMenu2.setText("Pelayanan");
 
-        jMenuItem6.setText("Tanggapan");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem5.setText("Pengaduan");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                jMenuItem5ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem6);
+        jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
 
@@ -86,18 +95,18 @@ public class menu2 extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(133, Short.MAX_VALUE))
         );
 
         pack();
@@ -111,10 +120,10 @@ public class menu2 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        Tanggapan obj = new Tanggapan();
-        obj.setVisible(true);
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        pengaduan obj = new pengaduan();
+        obj.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,6 +170,6 @@ public class menu2 extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables
 }

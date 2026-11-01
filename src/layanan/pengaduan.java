@@ -49,13 +49,16 @@ public class pengaduan extends javax.swing.JFrame {
         setLocationRelativeTo(this);
         conn = Koneksi.Koneksi. KoneksiDB();
         
+        String nama = session.getU_namaDepan();
+        String username = session.getU_username();
+        
         model = new DefaultTableModel();
         jTable1.setModel (model);
-        model.addColumn("NIK / ID Petugas");
-        model.addColumn("Username");
-        model.addColumn("Nama Lengkap");
-        model.addColumn ("Telpone");
-        model.addColumn("Hak Akses");
+        model.addColumn("ID Pengaduan");
+        model.addColumn("Nama");
+        model.addColumn("Tanggal Pengaduan");
+        model.addColumn ("Isi Pengaduan");
+        model.addColumn("Status");
         getData();
         
         setIconImage(
@@ -77,7 +80,7 @@ public class pengaduan extends javax.swing.JFrame {
                         while (rs.next()) {
                     Object[] obj = new Object [5];
                     obj [0] = rs.getString("id_pengaduan");
-                    obj [1] = rs.getString("nik");
+                    obj[1] = rs.getString("nama");
                     obj [2] = rs.getString("tgl_pengaduan"); 
                     obj [3] = rs.getString("isi_laporan"); 
                     obj [4]=rs.getString("status");
@@ -197,6 +200,11 @@ public class pengaduan extends javax.swing.JFrame {
             }
         ));
         jTable1.setRowHeight(36);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("CARI");
@@ -576,12 +584,15 @@ String sql = "";
             rs = pst.executeQuery();
             
             while (rs.next()) {
+                
+                
+                
                 Object[] obj = new Object[5];
-                obj[0] = rs.getString("id_pengaduan");
-                obj[1] = rs.getString("nik");
-                obj[2] = rs.getString("tgl_pengaduan");
-                obj[3] = rs.getString("isi_laporan");
-                obj[4] = rs.getString("status");
+                obj[0] = rs.getString("nik");
+                obj[1] = rs.getString("username");
+                obj[2] = rs.getString("nama");
+                obj[3] = rs.getString("telp");
+                obj[4] = rs.getString("level");
                 
                 model.addRow(obj);
             }
@@ -660,23 +671,51 @@ this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton9ActionPerformed
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
-        String tampilan="yyyy-MM-dd";
-            SimpleDateFormat fm = new SimpleDateFormat(tampilan);
-            String tanggal=String.valueOf(fm.format(jd_tglpengaduan.getDate()));     
+        
+        String tampilan = "yyyy-MM-dd";
+        SimpleDateFormat fm = new SimpleDateFormat(tampilan);
+        String tanggal = fm.format(jd_tglpengaduan.getDate());
+
         try {
-            String sql = "insert into pengaduan (nik,tgl_pengaduan,isi_laporan,status)values(?,?,?,?)";
+            String sql = "INSERT INTO pengaduan "
+                       + "(nik, nama, tgl_pengaduan, isi_laporan, status) "
+                       + "VALUES (?, ?, ?, ?, ?)";
+
             pst = conn.prepareStatement(sql);
             pst.setString(1, txt_nik.getText());
-            pst.setString(2, tanggal);
-            pst.setString(3, txt_isi.getText());
-            pst.setString(4, txt_status.getText());
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "saved");
+
+            // Ambil nama berdasarkan NIK masyarakat
+            String sqlNama = "SELECT nama FROM masyarakat WHERE nik = ?";
+            PreparedStatement pstNama = conn.prepareStatement(sqlNama);
+            pstNama.setString(1, txt_nik.getText());
+
+            ResultSet rsNama = pstNama.executeQuery();
+
+            if (rsNama.next()) {
+                pst.setString(2, rsNama.getString("nama"));
+            } else {
+                JOptionPane.showMessageDialog(this, "NIK masyarakat tidak ditemukan!");
+                return;
+            }
+
+            pst.setString(3, tanggal);
+            pst.setString(4, txt_isi.getText());
+            pst.setString(5, txt_status.getText());
+
+            pst.executeUpdate();
+
+            rsNama.close();
+            pstNama.close();
+
+            JOptionPane.showMessageDialog(this, "Pengaduan berhasil disimpan!");
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
+
         getData();
         bersih();
+
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -712,6 +751,16 @@ this.dispose();        // TODO add your handling code here:
         JOptionPane.showMessageDialog(null, e);
     }
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+int baris = jTable1.getSelectedRow();
+
+    if (baris != -1) {
+        txt_pengaduan.setText(
+            jTable1.getValueAt(baris, 0).toString()
+        );
+    }                // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
